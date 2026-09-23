@@ -1,0 +1,73 @@
+# Issue #3 — AI Architecture Assessment: CI/CD ve kaynak kod yönetimi kontrolleri
+
+## İnceleme kapsamı
+
+Bu değerlendirme, issue #3 kapsamındaki şu başlıkları yalnızca repository içinden doğrulanabilen kanıtlara dayanarak inceler:
+
+- pipeline dosyaları
+- build/test adımları
+- quality gate
+- security kontrolleri
+- dependency kontrolleri
+- artifact yönetimi
+- ortama göre deployment
+- production onayı
+- pipeline secret kullanımı
+- branch/PR politikası kanıtları
+
+## Repo envanteri özeti
+
+İnceleme sırasında repository içinde doğrulanabilen içerik, `rules/` klasörü altındaki iki metin dosyasıyla sınırlıdır:
+
+- `rules/AI_Architecture_Assessment_Agent_Değerlendirme_Dokümanı.txt`
+- `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt`
+
+Repository içinde `.github/workflows/`, `azure-pipelines.yml`, `Jenkinsfile`, `Dockerfile`, deployment manifesti, test projesi veya build betiği bulunmamaktadır. Bu nedenle aşağıdaki birçok kontrol için uygulama kanıtı değil, yalnızca dokümante edilmiş beklenti görülebilmektedir.
+
+## Bulgular tablosu
+
+| Kontrol alanı | Durum | Kanıt | Değerlendirme | Uygulanabilir öneri |
+| --- | --- | --- | --- | --- |
+| Pipeline dosyaları | **Eksik** | Repo envanterinde çalıştırılabilir pipeline tanımı yok; kılavuz yalnızca workflow dosyalarının repoda bulunması gerektiğini söylüyor (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:43-45`, `:145-148`). | CI/CD süreci kaynak koddan doğrulanamıyor; build-test-security-image-deploy zinciri fiilen tanımlı değil. | `.github/workflows/` altında en az build, test, security/dependency scan ve deployment aşamalarını içeren bir workflow ekleyin. |
+| Build adımları | **Eksik** | Kılavuz build/test/güvenlik kontrollerinin merge öncesi tamamlanmasını bekliyor (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:62-64`, `:145-146`), ancak repoda build tanımı yok. | Derleme doğrulaması otomasyona bağlanmamış. | Teknoloji yığınına uygun derleme komutunu pipeline içinde açık bir job olarak tanımlayın. |
+| Test adımları | **Eksik** | Test kodları ve test yapılandırmalarının push edilmesi gerektiği belirtilmiş (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:45`, `:298-301`), ancak repoda test veya test workflow’u yok. | Değişikliklerin otomatik doğrulaması yapılamıyor. | Mevcut teknolojiye uygun test projesi/betiği ve bunu çalıştıran CI adımı ekleyin. |
+| Quality gate | **Eksik** | Değerlendirme dokümanı quality gate durumunun değerlendirilmesini bekliyor (`rules/AI_Architecture_Assessment_Agent_Değerlendirme_Dokümanı.txt:46-52`), fakat repository içinde SonarQube, coverage eşiği veya benzeri bir gate tanımı yok. | Kod kalitesi merge öncesi ölçülmüyor. | Coverage, statik analiz ve kalite eşiğini pipeline’da zorunlu hale getirin. |
+| Security kontrolleri | **Eksik** | Kılavuz code scanning ve secret scanning çalıştırılmasını şart koşuyor (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:123-133`), ancak bunu başlatan workflow veya konfigürasyon yok. | Güvenlik açıkları PR aşamasında otomatik yakalanmıyor. | CodeQL/code scanning ve secret scanning tetiklerini PR ve push olaylarında çalışacak şekilde ekleyin. |
+| Dependency kontrolleri | **Eksik** | Kılavuz dependency review kontrolünü bekliyor (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:127-133`), fakat dependency taramasını gösteren workflow ya da manifest doğrulaması yok. | Açık bağımlılık riski görünür değil. | Dependency review veya ekosisteme uygun SCA taramasını PR pipeline’ına ekleyin. |
+| Artifact yönetimi | **Eksik** | Kılavuz container image üretimi ve registry’ye push beklentisi tanımlıyor (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:145-149`, `:298-299`), ancak artifact üreten pipeline ya da paketleme tanımı yok. | Dağıtılabilir çıktıların izlenebilirliği yok. | Build çıktısını artifact olarak yayınlayan ve retention ayarı yapan bir job ekleyin; container kullanılıyorsa image etiketleme stratejisini belgeleyin. |
+| Ortama göre deployment | **Eksik** | Azure Container Registry ve App Service deployment beklentisi dokümante edilmiş (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:147-149`), ancak environment bazlı deploy tanımı veya manifest yok. | Dev/test/prod ayrımı ve release akışı kaynak koddan doğrulanamıyor. | Ortam bazlı deployment job’ları, environment korumaları ve kullanılan hedefleri repoda tanımlayın. |
+| Production onayı | **Değerlendirilemedi** | Doküman yalnızca onaylı PR ve main merge beklentisini anlatıyor (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:53-66`, `:129-133`); environment approval veya required reviewer ayarı kaynak kodda yok. | Production’a çıkış için manuel onay mekanizmasının varlığı repodan doğrulanamıyor. | GitHub Environments veya eşdeğer onay mekanizmasını yapılandırın ve pipeline dosyasında açıkça referans verin. |
+| Pipeline secret kullanımı | **Değerlendirilemedi** | Kılavuz gerçek secret’ların repoda olmamasını ve gizli değerlerin Actions Secrets / App Settings / Key Vault üzerinden verilmesini ister (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:83-96`), ancak secret tüketen bir pipeline tanımı yok. | Secret yönetimi yaklaşımı dokümante edilmiş olsa da fiili kullanım şekli doğrulanamıyor. | Workflow dosyalarında secret referanslarını açıkça tanımlayın; secret adlarını belgeleyin, değerleri repoya koymayın. |
+| Branch/PR akışı — dokümante beklenti | **Mevcut (dokümantasyon düzeyinde)** | Zorunlu branching ve PR akışı yazılı olarak tanımlanmış (`rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:49-66`). | `main`, `development`, `feature/*` ve `fix/*` için hedeflenen süreç belgelenmiş. | Bu akışı repository ayarları ve workflow tetikleriyle teknik olarak zorunlu hale getirin. |
+| Branch protection / required checks / PR policy enforcement | **Değerlendirilemedi** | Kaynak kodda branch protection, required status checks, CODEOWNERS, PR template veya review zorunluluğunu kanıtlayan bir dosya yok. `rules/AI_Architecture_Assessment_Agent_Değerlendirme_Dokümanı.txt:57-59` gereği varsayım yapılmamalıdır. | Belgelenmiş süreç var; ancak bunun GitHub ayarlarıyla uygulanıp uygulanmadığı bu repodan doğrulanamıyor. | Koruma kurallarını repository settings tarafında etkinleştirin; mümkün olan kısımları CODEOWNERS, PR template ve workflow required checks ile görünür hale getirin. |
+
+## Security, dependency ve quality kontrollerinin ayrı değerlendirmesi
+
+### Security
+
+- **Durum:** Eksik
+- **Kanıt:** `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:123-133`
+- **Sonuç:** Code scanning ve secret scanning beklentisi var, fakat bunu uygulayan workflow veya sonuç kanıtı yok.
+
+### Dependency
+
+- **Durum:** Eksik
+- **Kanıt:** `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:127-133`
+- **Sonuç:** Dependency review bekleniyor, ancak repoda taramayı çalıştıran bir tanım bulunmuyor.
+
+### Quality
+
+- **Durum:** Eksik
+- **Kanıt:** `rules/AI_Architecture_Assessment_Agent_Değerlendirme_Dokümanı.txt:46-52`
+- **Sonuç:** Quality gate, coverage veya statik analiz eşiği tanımlı değil; merge öncesi kalite kontrolü doğrulanamıyor.
+
+## Öncelikli aksiyonlar
+
+1. `.github/workflows/` altında minimum build + test + security/dependency scan + deploy akışını ekleyin.
+2. PR üzerinde çalışan zorunlu quality gate ve güvenlik kontrollerini required check olarak tanımlayın.
+3. Artifact üretimi, saklama süresi ve deployment hedeflerini pipeline’da görünür hale getirin.
+4. Branch/PR politikasını yalnız dokümantasyonda bırakmayın; CODEOWNERS, PR template, environment approval ve branch protection ile uygulanabilir hale getirin.
+
+## Sonuç
+
+Repository, CI/CD ve kaynak kod yönetimi için beklentileri açıklayan dokümanlar içeriyor; ancak bu beklentileri uygulayan pipeline ve enforcement kanıtları repoda bulunmuyor. Bu nedenle build, test, quality, security, dependency, artifact ve deployment kontrolleri için sonuç **Eksik**; kaynak koddan doğrulanamayan branch protection, PR enforcement ve production approval başlıkları için sonuç **Değerlendirilemedi** olmuştur.

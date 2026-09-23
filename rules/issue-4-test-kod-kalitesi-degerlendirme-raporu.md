@@ -74,7 +74,7 @@ bulunmamaktadır.
 ## 4) 6.6 kabul kriterine göre değerlendirme
 `rules/AI_Architecture_Assessment_Agent_Değerlendirme_Dokümanı.txt:46-52` kapsamındaki kriterler; test yapısı, unit/integration test varlığı, kritik akış kapsamı, mock/assertion kalitesi, quality gate, coverage ve pipeline yürütümü üzerinden doğrulanmalıdır. PR #18 sonrası güncel repository durumunda bu başlıkları doğrulayacak teknik artefact'ler hâlâ bulunmadığı için Issue #4 kapsamında **kanıtlanmış bir kalite ihlali değil, kanıt eksikliği** tespit edilmiştir.
 
-## 5) Öneriler (confirmed violation değil, uygulanabilir sonraki adımlar)
+## 5) Öneriler (kesinleşmiş ihlal tespiti değil, uygulanabilir sonraki adımlar)
 1. `src/` ve `tests/` yapısını birlikte ekleyip unit ve integration test ayrımını repo içinde görünür kılın.
 2. Kritik iş kuralları için assertion kalitesi yüksek örnek testler ekleyin; dış bağımlılıklarda mock stratejisini belgeleyin.
 3. CI içinde test, coverage ve quality gate adımlarını tanımlayan `.github/workflows/*.yml` dosyaları ekleyin.

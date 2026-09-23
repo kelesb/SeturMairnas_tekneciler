@@ -12,7 +12,7 @@ Bu rapor, GitHub Issue #9 kapsamındaki **AI Architecture Assessment: Kod ve pro
   - `rules/issue-10-dokumantasyon-ve-mimari-yonetisim-degerlendirmesi.md`
   - `rules/issue-5-loglama-izlenebilirlik-ve-apm-degerlendirmesi.md`
   - `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt`
-- İnceleme anında repository içinde uygulama kaynak kodu, solution/proje dosyası, controller/service sınıfları, dependency injection yapılandırması, test projesi veya CI workflow'u gözlemlenmemiştir.
+- İnceleme anında repository içinde uygulama kaynak kodu, solution/proje dosyası, controller/service sınıfları, dependency injection yapılandırması, test projesi veya CI iş akışı gözlemlenmemiştir.
 
 ## Uygulanan standart
 

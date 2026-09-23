@@ -85,10 +85,10 @@ Uygulama kaynak kodu, testler, workflow dosyaları, Dockerfile, IaC/deployment d
 
 Bu çalışma kapsamında accidental secret commit riskini azaltmak için repository köküne, alt klasörlerdeki yaygın env ve build artefact desenlerini de kapsayan minimal bir `.gitignore` eklendi:
 
-- `.env` ve `.env.*` dosyaları hariç tutuldu
+- Root ve alt klasörlerdeki `.env`, `.env.local`, `.env.*.local` ve yaygın ortam bazlı `.env.<environment>` dosyaları hariç tutuldu
 - `*.log` ve local/IDE artefact'leri hariç tutuldu
 - `node_modules/`, `.venv/`, `bin/`, `obj/`, `dist/` gibi build çıktıları hariç tutuldu
-- `!.env.example` ve `!**/.env.example` kuralları ile env örnek şablonlarının versiyonlanması açık bırakıldı
+- `.env.example` gibi env örnek şablonları ignore kapsamına alınmadı; güvenli şablonların versiyonlanması açık bırakıldı
 
 Bu değişiklik, `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:70-96` ile uyumludur ve değerlendirme kanıtlarını gizleyen geniş ignore kuralları eklemez.
 

@@ -17,14 +17,14 @@ Bu değerlendirme, issue #3 kapsamındaki şu başlıkları yalnızca repository
 
 ## Repo envanteri özeti
 
-İnceleme anındaki repository envanteri, repository root görünümü ve görülebilen tracked dosyalar üzerinden şu şekilde gözlemlenmiştir:
+İnceleme anındaki repository envanteri, repository root görünümü ve görülebilen tracked dosyaların tamamı üzerinden şu şekilde gözlemlenmiştir:
 
 - repo kökünde yalnızca `rules/` klasörü yer almaktadır (`.git/` hariç)
 - `rules/` altında şu iki dosya bulunmaktadır:
   - `rules/AI_Architecture_Assessment_Agent_Değerlendirme_Dokümanı.txt`
   - `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt`
 
-Bu yöntemle gözlemlenen kök dizin snapshot’ında `.github/workflows/`, `azure-pipelines.yml`, `Jenkinsfile`, deployment manifesti, test projesi veya build betiği görülmemektedir. Bu nedenle aşağıdaki birçok kontrol için uygulama kanıtı değil, yalnızca dokümante edilmiş beklenti görülebilmektedir.
+Bu yöntemle gözlemlenen tracked repository içeriğinde `.github/workflows/`, `azure-pipelines.yml`, `Jenkinsfile`, deployment manifesti, test projesi veya build betiği görülmemektedir. Bu nedenle aşağıdaki birçok kontrol için uygulama kanıtı değil, yalnızca dokümante edilmiş beklenti görülebilmektedir.
 
 ## Bulgular tablosu
 

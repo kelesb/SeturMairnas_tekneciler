@@ -1,0 +1,304 @@
+Koç Holding Hackathon Katılımcı Teknik Kılavuzu
+GitHub geliştirme akışı, Azure kurulumu ve değerlendirme gereksinimleri
+
+Bu kılavuz, hackathon boyunca geliştireceğiniz çözümün GitHub ve Azure üzerinde nasıl hazırlanacağını, hangi kanıtların değerlendirileceğini ve resmi skorun nasıl oluşacağını açıklar.
+
+En önemli kural: GitHub repository'sinde ilgili commit altında bulunmayan hiçbir kod, prompt, Markdown dokümanı, workflow veya konfigürasyon değerlendirmeye alınamaz.
+
+1. Geliştirilecek çözüm
+
+Her takım, kendisine tahsis edilen GitHub repository'sinde gereksinim ve standart dokümanlarını temel alan bir AI tabanlı değerlendirme çözümü geliştirecektir.
+
+• Çözüm; repository içeriğini, kodu, promptları, teknik dokümanları ve yapılandırmaları birlikte incelemelidir.
+• Agent use case'i 10 değerlendirme metriği üzerinden kontrol edilecektir. Metriklerin ayrıntılı açıklaması ayrı bir ek dokümanda paylaşılacaktır.
+• SSO uygulaması ile SSO'yu açıklayan teknik dokümantasyon birlikte değerlendirilecektir; yalnızca kod veya yalnızca açıklama yeterli değildir.
+• Her bulgu için durum, gerekçe, risk, dosya/satır kanıtı ve uygulanabilir iyileştirme önerisi üretmelidir.
+• Nihai assessment çıktısı; metrik, sonuç durumu, puan, gerekçe, repository içindeki dosya/satır referansı ve iyileştirme önerisini içeren referanslı tablo formatında sunulmalıdır.
+• Çözüm Azure üzerinde çalışır durumda olmalı, health endpoint'i sunmalı ve örnek request-response akışını tamamlamalıdır.
+• Model çağrıları organizasyon tarafından sağlanan APIM AI Gateway üzerinden yapılmalıdır.
+
+GitHub coding agent ile geliştirme
+
+1. Issue'yu seçin: GitHub'da oluşturulan issue'lardan geliştirilecek işi seçin.
+2. Yetkili coding agent'a atayın: Issue'yu organizasyon tarafından izin verilen GitHub tabanlı coding agent'a atayın.
+3. Agent çalışmasını izleyin: Agent kendi izole geliştirme ortamında kodu üretir, test ve kontrolleri çalıştırır, branch açar ve draft pull request oluşturur.
+4. Pull request'i inceleyin: Takım agent'ın ürettiği kodu, testleri, promptları ve dokümantasyonu kontrol eder; gerekiyorsa PR üzerinden düzeltme ister.
+5. Onaylayıp merge edin: Yalnız kontrolleri tamamlanıp takım tarafından onaylanan PR varsayılan branch'e merge edilir ve resmi değerlendirmeye girer.
+
+2. GitHub Issue oluşturma
+
+Kod geliştirme başlamadan önce Koç Holding tarafından sağlanan gereksinimler GitHub üzerinden en az 10 anlamlı PBI veya task'a ayrılmalı ve ilgili takım repository'sinde GitHub Issue olarak oluşturulmalıdır.
+
+1. Gereksinimleri GitHub'a alın: Paylaşılan kapsam ve standart dokümanlarını kaynak olarak kullanın.
+2. PBI ve task'ları üretin: GitHub ile en az 10 anlamlı, birbirinden ayrışan ve uygulanabilir iş paketi oluşturun.
+3. Geliştirmeyi başlatın: Oluşturulan issue yetkili coding agent'a atanır ve geliştirme branch/PR akışıyla devam eder.
+
+3. GitHub tek değerlendirme kaynağıdır
+
+Değerlendirme sistemi yalnızca GitHub'a push edilmiş commitleri okuyacaktır. Local bilgisayarda bulunan, commitlenmeyen veya push edilmeyen içerikler sistem tarafından görülemez.
+
+• Kaynak kodun tamamı push edilmelidir.
+• System prompt, agent instruction, prompt template ve model yapılandırmaları push edilmelidir.
+• README ve diğer Markdown dokümanları push edilmelidir.
+• GitHub Actions YAML dosyaları push edilmelidir.
+• Dockerfile, deployment dosyaları, güvenli konfigürasyon şablonları ve kullanılan IaC dosyaları push edilmelidir.
+• Test kodları ve test yapılandırmaları push edilmelidir.
+
+Bir özelliğin uygulamada çalışıyor olması tek başına yeterli değildir. Özelliğin kodu ve doğrulama kanıtı değerlendirilen committe bulunmalıdır.
+
+4. Zorunlu branching ve pull request akışı
+
+Branch kullanım ve değerlendirme durumu:
+
+main: Korunan varsayılan branch ve resmi sürüm. Onaylı PR merge'i sonrası resmi değerlendirme.
+development: Takım içi entegrasyon ve doğrulama. Resmi değerlendirmeye alınmaz.
+feature/<issue-no>-<kısa-ad>: Tek bir issue veya iş paketi için geliştirme. Resmi değerlendirmeye alınmaz.
+fix/<issue-no>-<kısa-ad>: Hata ve güvenlik düzeltmesi. Resmi değerlendirmeye alınmaz.
+
+1. Issue'yu seçin: GitHub'daki issue içinden geliştirilecek işi seçin.
+2. Coding agent'a atayın: Issue'yu organizasyon tarafından izin verilen GitHub coding agent'a atayın ve hedef base branch olarak development branch'ini seçin.
+3. Agent çalışmasını başlatın: Coding agent issue için çalışma branch'i açar; kodu, testleri, promptları, dokümantasyonu ve gerekli konfigürasyonları üretip commit/push işlemlerini gerçekleştirir ve development branch'ine yönelik draft PR açar.
+4. Agent PR'ını inceleyin: PR açıklamasındaki issue bağlantısını, değişiklikleri ve doğrulama sonuçlarını kontrol edin. Gerekli düzeltmeleri PR üzerinden agent'tan isteyin.
+5. Kontrolleri tamamlayın: Build, test ve güvenlik kontrolleri başarıyla tamamlandıktan sonra agent PR'ını development branch'ine merge edin.
+6. Main PR'ını açın: Kararlı sürüm için development branch'inden main branch'ine PR açın ve son kontrolleri çalıştırın.
+7. Onaylayıp main'e merge edin: Yalnız incelemeleri ve zorunlu kontrolleri tamamlanan PR'ı main branch'ine merge edin.
+
+Merge edilen commit resmi değerlendirmeye girer ve nihai skoru günceller. Main branch'e doğrudan push yapılmamalıdır. Yalnızca incelemeleri tamamlanmış bir PR aracılığıyla main branch'e merge edilen commit resmi değerlendirmeye alınır. Merge edilmemiş PR'lar ve diğer branch'ler skor üretmez.
+
+5. Gitignore kuralları ve zorunlu dosyalar
+
+`.gitignore` yalnızca yerel, üretilmiş veya gizli içerikleri dışarıda bırakmalıdır. Değerlendirme kanıtlarını gizleyen geniş kurallar kullanılmamalıdır.
+
+Repository'de bulunmalı:
+• src/ veya uygulama kaynak kodu
+• tests/ ve test yapılandırmaları
+• prompts/ ve agent instruction dosyaları
+• docs/ ve gerekli Markdown dosyaları
+• .github/workflows/*.yml veya *.yaml
+• Dockerfile ve container yapılandırmaları
+• Config şablonları ve .env.example
+• Deployment/IaC dosyaları
+
+Repository'ye kesinlikle eklenmemeli:
+• .env ve gerçek secret değerleri
+• API key, parola, token ve sertifika private keyleri
+• node_modules, .venv, bin, obj, dist gibi üretilmiş klasörler
+• IDE cache ve işletim sistemi geçici dosyaları
+• Yerel loglar ve geçici çalışma çıktıları
+• Gerçek kişisel veri içeren test dosyaları
+• Storage connection string ve Foundry/APIM anahtarları
+• Canlı ortamdan alınmış hassas veri dump'ları
+
+Aşağıdaki gibi geniş `.gitignore` kuralları kullanılmamalıdır; bu kurallar değerlendirme için zorunlu dosyaları görünmez hâle getirir:
+
+*.yml    *.yaml    *.md    .github/    config/    prompts/    Dockerfile
+
+Konfigürasyon dosyasının yapısı repository'de olmalı; gizli değerler GitHub Actions Secrets, Azure App Settings veya Key Vault üzerinden verilmelidir.
+
+6. Issue ve AI destekli geliştirme
+
+• Her takım en az 10 geçerli ve birbirinden anlamlı GitHub Issue oluşturmalıdır.
+• Issue'lar GitHub üzerinde oluşturulmalıdır.
+• Yalnızca sayıyı tamamlamak için açılmış, tekrar eden veya kapsam dışı issue'lar geçerli kabul edilmez.
+• Her issue; kaynak gereksinim, amaç, kapsam, kabul kriterleri ve gerekiyorsa bağımlılıkları içermelidir.
+• Issue gövdesi AI tarafından oluşturulmalıdır. AI tarafından üretilen ilk içerik sonradan manuel olarak değiştirilmemeli; zorunlu açıklamalar ayrı yorum olarak eklenmelidir.
+• Issue ile ilgili branch, commit ve PR bağlantısı korunmalıdır.
+
+Önerilen issue alanları:
+
+Başlık: Tek ve anlaşılır iş sonucu.
+Kaynak gereksinim: Hangi madde veya ihtiyaçtan üretildiği.
+Kapsam: Yapılacak ve yapılmayacak işler.
+Kabul kriterleri: Kontrol edilebilir tamamlanma koşulları.
+İlişkiler: Bağımlı issue, branch ve PR bağlantıları.
+
+Kod üretimi ve kapsam değerlendirmesi
+
+• Kod geliştirme, oluşturulan issue'lar üzerinden onaylı coding agent'a yaptırılmalıdır; issue, agent çalışması, branch, commit ve PR ilişkisi korunmalıdır.
+• Değerlendirme yalnız kaynak kodla sınırlı değildir. Repository'nin tamamı; promptlar, Markdown dokümanları, workflow'lar, konfigürasyonlar ve testlerle birlikte incelenir.
+• Agent use case'inin 10 değerlendirme metriğini nasıl karşıladığı repository içinde uygulanmış ve dokümante edilmiş olmalıdır.
+• SSO gibi zorunlu yetenekler hem çalışan uygulamada hem kodda hem de teknik dokümantasyonda doğrulanabilir olmalıdır.
+• Assessment çıktısı, her kararın hangi dosya, satır, PR, workflow veya çalışma zamanı kanıtına dayandığını gösteren referanslı tablo içermelidir.
+
+7. GitHub Advanced Security ve CI/CD
+
+GitHub Advanced Security
+
+• Code scanning, secret scanning ve dependency review kontrolleri çalıştırılmalıdır.
+• Güvenlik taraması PR açıldığında başlamalı; PR'a yeni commit gönderildiğinde ve her yeni PR'da tekrar çalışmalıdır.
+• Main branch'e doğrudan push yapılmamalı; feature/fix branch'ten development'a, kararlı sürüm için development'tan korunan main branch'e PR açılmalıdır.
+• Critical ve High başta olmak üzere tüm açık bulgular PR onayından önce incelenmelidir.
+• Dismiss edilen bulgular için teknik gerekçe bırakılmalıdır.
+• Aynı bulgu farklı workflow çalıştırmalarında çoğaltılmamalıdır.
+• Bulgular puan kaybına neden olduğu için PR, güvenlik sonuçları incelenip gerekli düzeltmeler tamamlandığından emin olunduktan sonra onaylanmalıdır.
+
+Açık bulgu seviyesi ve bulgu başına puan etkisi:
+Critical: -0,5
+High: -0,3
+Medium: -0,1
+Low: -0,1
+
+GitHub Advanced Security puanı 10 üzerinden hesaplanır ve hiçbir durumda 0'ın altına düşmez. Aynı teknik bulgu mükerrer workflow kayıtları nedeniyle birden fazla kez düşülmez.
+
+CI/CD
+
+• Workflow dosyasının repository'de bulunması tek başına yeterli değildir; workflow başarıyla çalışmalıdır.
+• Pipeline en az build, test, güvenlik kontrolü, container image üretimi ve deployment adımlarını içermelidir.
+• Container image takımın Azure Container Registry kaynağına push edilmelidir.
+• Başarılı image, Azure App Service'e deploy edilmelidir.
+
+8. Azure servis sorumlulukları
+
+Organizasyon / Nephos tarafından sağlanacak veya oluşturulacak kaynaklar:
+• Takım GitHub repository'si ve erişimler
+• Takım Resource Group/RBAC hazırlığı
+• Ortak APIM AI Gateway
+• GitHub App ve değerlendirme platformu
+• Dashboard
+• Aura bağlantı yöntemi
+• Ortak PII ve semantic cache politikaları
+
+Katılımcı takım tarafından zorunlu sağlanacak veya oluşturulacak kaynaklar:
+• Microsoft Foundry resource/project ve model deployment
+• Azure Container Registry
+• App Service Plan ve App Service
+• Storage Account
+• Application Insights ve ilişkili Log Analytics Workspace
+
+İhtiyaca bağlı kaynaklar:
+• Managed Identity
+• Key Vault
+• AI Search
+• Veritabanı
+• Functions
+• Service Bus veya çözümün gerçekten ihtiyaç duyduğu diğer servisler
+
+Kaynak sayısının fazla olması başarı kriteri değildir. Yalnızca çözüm için gerekli kaynakları oluşturun ve her kaynağın kullanımını README veya mimari dokümanda açıklayın.
+
+APIM AI Gateway organizasyon/Nephos tarafından ortak servis olarak sağlanacaktır; takımlar ayrıca APIM oluşturmamalıdır. Her takım, uygulama trafiğini kendisine verilen APIM endpoint'ine bağlamak ve bağlantının çalıştığını göstermekle sorumludur.
+
+Zorunlu Application Insights bağlantısı
+
+Uygulamanızın Application Insights'a bağlı olması zorunludur. Application Insights bağlantısı bulunmayan veya telemetry üretmeyen uygulama Azure runtime ve APIM değerlendirmesinde gerekli kanıtı sağlayamaz.
+
+• HTTP request, dependency, exception ve temel performans telemetrisi üretilmelidir.
+• Model çağrıları için model/deployment adı, input token, output token, cached token, latency, status ve correlation ID kaydedilmelidir.
+• Telemetry kayıtları takım, uygulama, ortam ve commit/sürüm ile ilişkilendirilebilir olmalıdır.
+• Prompt, response, gerçek kişisel veri, API anahtarı veya secret telemetry içine yazılmamalıdır.
+• Application Insights connection string kod içine gömülmemeli; App Service configuration üzerinden verilmelidir.
+
+9. Runtime gereksinimleri
+
+• Uygulama Azure App Service üzerinde erişilebilir durumda olmalıdır.
+• `/health` veya eşdeğer health endpoint'i HTTP 200 döndürmelidir.
+• Health cevabı en az uygulama durumu ve sürüm bilgisini içermeli; secret veya hassas ayrıntı içermemelidir.
+• Değerlendiricinin çağırabileceği işlevsel bir assessment endpoint'i bulunmalıdır.
+• Örnek request gönderildiğinde geçerli response alınabilmelidir.
+• Deployment'ın değerlendirilen main commit ile ilişkisi gösterilebilmelidir.
+
+10. APIM AI Gateway entegrasyonu
+
+APIM AI Gateway organizasyon tarafından merkezi olarak sağlanacaktır. Takım uygulaması, Foundry modeline değerlendirmeye giren çağrıları doğrudan göndermemeli; kendisine verilen APIM endpoint'i üzerinden göndermelidir.
+
+Takım uygulaması → APIM AI Gateway → Azure AI Foundry model deployment
+
+APIM değerlendirmesi
+
+• PII maskeleme testi 5 puandır. Organizasyon; sentetik e-posta adresi, telefon numarası, T.C. kimlik numarası ve secret benzeri örnek değerler içeren test girdileri sağlayacaktır.
+• Gerçek kişisel veri veya gerçek secret test amacıyla kullanılmayacaktır ve repository'ye eklenmemelidir.
+• Hassas değerler Foundry modeline iletilmeden önce Gateway katmanında maskelenmeli veya güvenli biçimde redakte edilmelidir; model isteğinde, response'ta ve telemetry/log kayıtlarında ham değer bulunmamalıdır.
+• Secret benzeri değerlerin modele taşınmasını engelleyen kontrol ve güvenli hata davranışı ayrıca doğrulanacaktır.
+• Semantic cache testi 5 puandır. İlk istekte cache miss, benzer takip isteğinde cache hit ve azalan backend/token kullanımı gösterilmelidir.
+• Semantic cache takım, model/deployment ve system prompt bağlamına göre ayrıştırılmalı; kişiye özel veya hassas içerik güvenli cache politikası dışında tutulmalıdır.
+• Foundry'ye doğrudan giden ve APIM'de görünmeyen trafik APIM değerlendirmesine ve runtime doğrulamasına kanıt oluşturmaz.
+
+12. AI kullanım maliyeti ve model listesi
+
+AI kullanım maliyeti 15 puandır. Puanlama token adedine göre değil, kod üretiminde kullanılan onaylı coding agent modellerinin toplam maliyetine göre yapılacaktır. Ekip başına toplam üst limit 50 ABD dolarıdır.
+
+Kullanıma açılması değerlendirilen modeller arasında:
+• Claude Opus 4.8
+• Claude Sonnet 5
+• GPT-5.5
+• GPT-5.6 Sol
+• GPT-5.6 Terra
+• Claude Haiku 4.5
+• Claude Opus 5
+• Gemini 3.5 Flash
+• Gemini 3.6 Flash
+• Gemini 3.7 Flash
+• Gemini 3.8 Flash
+• GPT-5 mini
+• GPT-5.3-Codex
+• GPT-5.4
+• GPT-5.4 mini
+
+Etkinleştirilecek modellerin kullanılabilirliği ve nihai etkinlik kataloğu organizasyon politikalarına göre duyurulacaktır. Model seçiminde yalnız çıktı kalitesi değil, görev karmaşıklığı ve AI Credit tüketimi de dikkate alınmalıdır.
+
+• Resmi ölçüm GitHub AI Credits ve Copilot usage raporlarındaki kullanım kayıtlarına dayanacaktır.
+• Katılımcılar yalnızca izin verilen modelleri ve organizasyonun sağladığı GitHub coding agent akışını kullanmalıdır.
+• IDE veya local coding-agent kullanımı bu değerlendirmenin kapsamı dışındadır ve resmi AI üretim/maliyet kanıtı sayılmaz.
+• Katılımcının geliştirdiği agent'ın Foundry runtime trafiği APIM ve Application Insights üzerinden ayrıca izlenir; bu telemetri Azure runtime ve APIM kontrolleri için kullanılır.
+
+Referans model maliyeti karşılaştırması
+
+Claude Opus 5, yüksek AI Credit tüketimi nedeniyle yüksek maliyetli referans model; GPT-5.4 mini ise düşük AI Credit tüketimiyle ekonomik referans model olarak karşılaştırılmaktadır.
+
+AI Credit / 1M token | Claude Opus 5 | GPT-5.4 mini
+Input | 500 | 75
+Output | 2.500 | 450
+Cache Read | 50 | 7,5
+Cache Write | 625 | 0
+Maliyet seviyesi | High Cost | Low Cost
+
+Aynı token hacmi üzerinden GPT-5.4 mini; Claude Opus 5'e kıyasla input ve Cache Read işlemlerinde yaklaşık 6,7 kat, output işlemlerinde yaklaşık 5,6 kat daha düşük AI Credit tüketir. Etkinlik için kullanılan referans tabloda GPT-5.4 mini Cache Write tüketimi 0 AI Credit / 1M token olarak belirtilmiştir.
+
+Karmaşık ve yüksek seviyeli reasoning gerektiren görevlerde Claude Opus 5 tercih edilebilir. Günlük geliştirme, kod üretimi, kod açıklama ve refactoring gibi daha yüksek hacimli işlerde GPT-5.4 mini daha düşük AI Credit tüketimi nedeniyle maliyet avantajı sağlar.
+
+13. Nihai değerlendirme modeli
+
+Metrik | Puan | Temel kanıt
+Issue üretimi | 10 | En az 10 geçerli issue, kapsam ve AI üretim kaydı
+Kod üretimi ve kapsam | 20 | Repository kodu, prompt/MD dosyaları ve gereksinim uyumu
+GitHub Advanced Security | 10 | Code, secret ve dependency scanning sonuçları
+CI/CD | 10 | Çalışan workflow, ACR image ve başarılı deployment
+Azure runtime | 10 | Kaynaklar, erişim, health, request-response ve Application Insights
+APIM AI Gateway | 10 | Gateway trafiği, PII maskeleme ve semantic cache
+AI kullanım maliyeti | 15 | GitHub AI Credits, Copilot usage ve onaylı model maliyet kataloğu
+Aura | 15 | Aura güvenlik/risk değerlendirme sonucu
+Toplam | 100 |
+
+Metriklere ilişkin kısa açıklamalar
+
+• Issue üretimi: En az 10 issue bulunması tek başına tam puan getirmez; doğruluk, kapsam, gereksiz tekrarlar, kabul kriterleri ve AI üretim kaydı birlikte değerlendirilir.
+• Kod üretimi ve kapsam: Repository'nin tamamı, prompt ve Markdown dosyalarıyla birlikte incelenir. Gereksinimi karşılayan somut dosya/satır kanıtı aranır.
+• GitHub Advanced Security: Başlangıç puanı 10'dur; her Critical bulgu için 0,5, High için 0,3, Medium ve Low için 0,1 puan düşülür. Puan sıfırın altına inmez.
+• CI/CD: Workflow kalitesi/build-test-security, image'ın ACR'a gönderilmesi ve başarılı deployment olarak değerlendirilir.
+• Azure runtime: Kaynak varlığı 2, erişilebilirlik 2, health 2, başarılı işlevsel request-response 3 ve Application Insights telemetrisi 1 puandır.
+• APIM AI Gateway: PII maskeleme 5 ve semantic cache 5 puandır. Model trafiğinin gerçekten APIM üzerinden geçmesi ön koşuldur.
+• AI kullanım maliyeti: Coding agent kullanımının toplam maliyeti puanlanır; kesin model listesi, fiyat/credit kataloğu ve puan bantları ayrıca duyurulur.
+• Aura: Aura skoru 100 üzerinden alınarak 15 puana ölçeklenir.
+
+14. Resmi skorun oluşması
+
+Feature/development branch veya açık merge edilmemiş çalışma: PR commit'i resmi değerlendirmeye alınmaz.
+PR ile main branch'e merge edilmiş commit: Assessment başlatılır ve tek güncel skor üretilir.
+Daha yeni onaylı main merge: Main üzerindeki daha yeni merge commit'i yeni başarılı assessment ile önceki skorun yerini alır.
+
+Her değerlendirme commit SHA ve değerlendirme zamanı ile kaydedilir. Dış servis kaynaklı teknik hata, ekip hatası olarak puanlanmadan önce yeniden denenir; ancak takımın sağlaması gereken kanıt yoksa ilgili kriter karşılanmamış kabul edilir.
+
+15. Teslim öncesi katılımcı kontrol listesi
+
+• En az 10 geçerli GitHub Issue var ve her biri kapsam/kabul kriteri içeriyor.
+• Issue, branch, commit ve PR bağlantıları kurulmuş.
+• Kod, promptlar, Markdown dokümanları, testler ve config şablonları push edilmiş.
+• .github/workflows altındaki YAML dosyaları tracked durumda.
+• Secret, API key, connection string veya gerçek kişisel veri repository'de yok.
+• GHAS kontrolleri çalışıyor ve kritik bulgular ele alınmış.
+• CI/CD build-test-image-deploy akışı başarılı.
+• ACR image mevcut ve App Service son image ile çalışıyor.
+• Application Insights bağlı ve güncel telemetry üretiyor.
+• Health ve işlevsel endpoint testleri başarılı.
+• Model trafiği APIM üzerinden geçiyor; PII ve cache testleri doğrulanmış.
+• Yalnız izin verilen GitHub coding agent modelleri kullanılmış; kullanım/maliyet kanıtları korunmuş ve ekip üst limiti aşılmamış.
+• Main PR açılmış, kontroller tamamlanmış ve resmi sürüm main'e merge edilmiş.

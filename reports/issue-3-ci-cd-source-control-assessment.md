@@ -24,7 +24,7 @@ Bu değerlendirme, issue #3 kapsamındaki şu başlıkları yalnızca repository
   - `rules/AI_Architecture_Assessment_Agent_Değerlendirme_Dokümanı.txt`
   - `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt`
 
-Gözlemlenen repository snapshot’ında `.github/workflows/`, `azure-pipelines.yml`, `Jenkinsfile`, `Dockerfile`, deployment manifesti, test projesi veya build betiği görülmemektedir. Bu nedenle aşağıdaki birçok kontrol için uygulama kanıtı değil, yalnızca dokümante edilmiş beklenti görülebilmektedir.
+Gözlemlenen repository snapshot’ında `.github/workflows/`, `azure-pipelines.yml`, `Jenkinsfile`, deployment manifesti, test projesi veya build betiği görülmemektedir. Bu nedenle aşağıdaki birçok kontrol için uygulama kanıtı değil, yalnızca dokümante edilmiş beklenti görülebilmektedir.
 
 ## Bulgular tablosu
 
@@ -91,7 +91,7 @@ Gözlemlenen repository snapshot’ında `.github/workflows/`, `azure-pipelines.
     <tr>
       <td>Ortama göre deployment</td>
       <td><strong>Değerlendirilemedi</strong></td>
-      <td>Kılavuz, hedef süreç olarak ACR/App Service tabanlı deployment beklentisi tanımlıyor (<code>rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:147-149</code>), ancak repoda environment bazlı deploy tanımı veya manifest yok.</td>
+      <td>Kılavuz, ortam bazlı deployment beklentisi tanımlıyor (<code>rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:145-149</code>), ancak repoda environment bazlı deploy tanımı veya manifest yok.</td>
       <td>Hangi ortamlara, hangi koşullarla dağıtım yapıldığı kaynak koddan doğrulanamıyor.</td>
       <td>Ortam bazlı deployment job’ları, environment korumaları ve kullanılan hedefleri repoda tanımlayın.</td>
     </tr>

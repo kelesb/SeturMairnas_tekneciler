@@ -11,7 +11,12 @@ Thumbs.db
 .idea/
 .vscode/
 node_modules/
+**/node_modules/
 .venv/
+**/.venv/
 bin/
+**/bin/
 obj/
+**/obj/
 dist/
+**/dist/

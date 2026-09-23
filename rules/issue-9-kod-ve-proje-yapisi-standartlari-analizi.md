@@ -35,4 +35,4 @@ Bu rapor, GitHub issue #9 kapsamındaki **AI Architecture Assessment: Kod ve pro
 
 Bu commit kapsamındaki repository, issue #9'da istenen mimari alanların çoğunu değerlendirmek için gerekli uygulama artefact'lerini içermemektedir. Bu nedenle yukarıdaki tablo dışında ek mimari ihlal raporlanmamıştır; kanıt bulunmayan konularda varsayım yapılmamıştır.
 
-Issue #9'un tam karşılanabilmesi için aynı repository içinde değerlendirilebilir kaynak kodu, proje yapısını ve test/çalıştırma artefact'lerini içeren bir çözüm commit zinciri gereklidir. Bu rapor mevcut committe gözlemlenebilen tek doğrulanabilir durumu belgelemektedir.
+Issue #9'un tam karşılanabilmesi için aynı repository içinde değerlendirilebilir kaynak kodu, proje yapısını ve test/çalıştırma artefact'lerini içeren bir çözüm commit zinciri gereklidir. Bu rapor mevcut commit'te gözlemlenebilen tek doğrulanabilir durumu belgelemektedir.

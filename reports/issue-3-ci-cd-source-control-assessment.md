@@ -24,7 +24,7 @@ Bu değerlendirme, issue #3 kapsamındaki şu başlıkları yalnızca repository
   - `rules/AI_Architecture_Assessment_Agent_Değerlendirme_Dokümanı.txt`
   - `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt`
 
-Gözlemlenen repository snapshot’ında `.github/workflows/`, `azure-pipelines.yml`, `Jenkinsfile`, deployment manifesti, test projesi veya build betiği görülmemektedir. Bu nedenle aşağıdaki birçok kontrol için uygulama kanıtı değil, yalnızca dokümante edilmiş beklenti görülebilmektedir.
+Gözlemlenen kök dizin snapshot’ında `.github/workflows/`, `azure-pipelines.yml`, `Jenkinsfile`, deployment manifesti, test projesi veya build betiği görülmemektedir. Bu nedenle aşağıdaki birçok kontrol için uygulama kanıtı değil, yalnızca dokümante edilmiş beklenti görülebilmektedir.
 
 ## Bulgular tablosu
 

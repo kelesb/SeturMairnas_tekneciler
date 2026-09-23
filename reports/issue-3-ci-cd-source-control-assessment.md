@@ -17,12 +17,12 @@ Bu değerlendirme, issue #3 kapsamındaki şu başlıkları yalnızca repository
 
 ## Repo envanteri özeti
 
-İnceleme sırasında repository içinde doğrulanabilen içerik, `rules/` klasörü altındaki iki metin dosyasıyla sınırlıdır:
+CI/CD ve kaynak kod yönetimi değerlendirmesine temel oluşturan mevcut repository kanıtı, inceleme anında `rules/` klasörü altındaki şu iki metin dosyasıyla sınırlıdır:
 
 - `rules/AI_Architecture_Assessment_Agent_Değerlendirme_Dokümanı.txt`
 - `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt`
 
-Repository içinde `.github/workflows/`, `azure-pipelines.yml`, `Jenkinsfile`, `Dockerfile`, deployment manifesti, test projesi veya build betiği bulunmamaktadır. Bu nedenle aşağıdaki birçok kontrol için uygulama kanıtı değil, yalnızca dokümante edilmiş beklenti görülebilmektedir.
+Bu PR ile eklenen rapor dışında repository içinde `.github/workflows/`, `azure-pipelines.yml`, `Jenkinsfile`, `Dockerfile`, deployment manifesti, test projesi veya build betiği bulunmamaktadır. Bu nedenle aşağıdaki birçok kontrol için uygulama kanıtı değil, yalnızca dokümante edilmiş beklenti görülebilmektedir.
 
 ## Bulgular tablosu
 

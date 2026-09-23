@@ -83,7 +83,7 @@ Uygulama kaynak kodu, testler, workflow dosyaları, Dockerfile, IaC/deployment d
 
 ## Uygulanan küçük ve güvenli düzeltme
 
-Bu çalışma kapsamında accidental secret commit riskini azaltmak için repository köküne, alt klasörlerdeki yaygın env ve build artefact desenlerini de kapsayan minimal bir `.gitignore` eklendi:
+Bu çalışma kapsamında accidental secret commit riskini azaltmak için repository genelinde, kök ve alt klasörlerdeki yaygın env ve build artefact desenlerini kapsayan minimal bir `.gitignore` eklendi:
 
 - Root ve alt klasörlerdeki `.env`, `.env.local`, `.env.*.local` ve yaygın ortam bazlı `.env.<environment>` dosyaları hariç tutuldu
 - `*.log` ve local/IDE artefact'leri hariç tutuldu

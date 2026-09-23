@@ -88,7 +88,7 @@ Bu çalışma kapsamında accidental secret commit riskini azaltmak için reposi
 - Root ve alt klasörlerdeki `.env` ve `.env.*` secret dosyaları hariç tutuldu
 - `*.log` ve local/IDE artefact'leri hariç tutuldu
 - `node_modules/`, `.venv/` ve `dist/` gibi yaygın bağımlılık / build çıktıları hariç tutuldu
-- Dizin geçişi korunarak `.env.example` ve `.env.<name>.example` biçimindeki env örnek şablonları ignore kapsamı dışında bırakıldı; güvenli temel şablonların versiyonlanması açık tutuldu
+- Tam adı `.env.example` olan env örnek şablonu ignore kapsamı dışında bırakıldı; güvenli temel şablonun versiyonlanması açık tutuldu
 
 Bu değişiklik, `rules/katilimci_github_ve_AI_kullanim_klavuzu.txt:70-96` ile uyumludur ve değerlendirme kanıtlarını gizleyen geniş ignore kuralları eklemez.
 

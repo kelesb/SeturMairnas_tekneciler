@@ -1,7 +1,12 @@
 **/.env
-**/.env.*
-!**/.env.example
-!**/.env*.example
+**/.env.[!e]*
+**/.env.e[!x]*
+**/.env.ex[!a]*
+**/.env.exa[!m]*
+**/.env.exam[!p]*
+**/.env.examp[!l]*
+**/.env.exampl[!e]*
+**/.env.example?*
 *.log
 .DS_Store
 Thumbs.db
